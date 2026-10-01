@@ -1,0 +1,6 @@
+# librairies necessaires pour le projet
+pandas
+dbt-postgres
+requests
+sqlalchemy
+psycopg2

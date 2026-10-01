@@ -1,0 +1,11 @@
+__pycache__/*.pyc
+__pycache__/*.pyd
+__pycache__/
+.venv/
+.vscode/
+open_meteo_cache_admin2/
+logs/
+*.csv
+*.ods
+*.docx
+.env
