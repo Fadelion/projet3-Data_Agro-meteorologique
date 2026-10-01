@@ -1,0 +1,56 @@
+# Fusionné automatiquement avec docker-compose.yaml par Docker Compose
+# (il suffit que ce fichier soit dans le même dossier).
+#
+# Ajoute un second PostgreSQL, dédié aux données harveststat/météo,
+# séparé du `postgres` officiel qui sert aux métadonnées d'Airflow.
+# Port hôte différent (5433) pour ne pas entrer en conflit si tu
+# accèdes un jour directement au postgres d'Airflow depuis ton poste.
+---
+services:
+  postgres_harveststat:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: harveststat
+      POSTGRES_PASSWORD: harveststat
+      POSTGRES_DB: harveststat_meteo
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-harveststat-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "harveststat"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  warehouse-init:
+    image: postgres:16
+    depends_on:
+      postgres_harveststat:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: harveststat
+    volumes:
+      - ./init_schema.sql:/init_schema.sql:ro
+    entrypoint: ["psql"]
+    command:
+      - -h
+      - postgres_harveststat
+      - -U
+      - harveststat
+      - -d
+      - harveststat_meteo
+      - -v
+      - ON_ERROR_STOP=1
+      - -f
+      - /init_schema.sql
+    restart: "no"
+
+  airflow-init:
+    depends_on:
+      warehouse-init:
+        condition: service_completed_successfully
+
+volumes:
+  postgres-harveststat-volume:

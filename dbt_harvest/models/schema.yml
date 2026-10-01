@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: recolte
+    description: "Table de faits contenant les mesures agricoles"
+    columns:
+      - name: id_recolte
+        tests:
+          - unique
+          - not_null
+
+  - name: meteo
+    description: "Table de faits contenant les relevés météorologiques journaliers"
+    columns:
+      - name: id_meteo
+        tests:
+          - unique
+          - not_null
+      - name: id_departement
+        tests:
+          - not_null

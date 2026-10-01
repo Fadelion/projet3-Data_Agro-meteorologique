@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: harveststat
+    schema: public
+    tables:
+      - name: meteo
+      - name: recolte

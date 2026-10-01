@@ -5,6 +5,7 @@ __pycache__/
 .vscode/
 open_meteo_cache_admin2/
 logs/
+dags/data/
 *.csv
 *.ods
 *.docx
