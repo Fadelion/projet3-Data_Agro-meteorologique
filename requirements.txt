@@ -1,6 +1,8 @@
-# librairies necessaires pour le projet
+# Python dependencies used by the ETL, dbt models, and setup scripts.
 pandas
 dbt-postgres
 requests
 sqlalchemy
 psycopg2
+# Download missing project CSV files from Google Drive during setup.
+gdown
