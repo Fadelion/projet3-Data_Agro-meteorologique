@@ -10,3 +10,4 @@ dags/data/
 *.ods
 *.docx
 .env
+*.pdf
